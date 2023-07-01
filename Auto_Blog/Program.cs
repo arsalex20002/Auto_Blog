@@ -1,7 +1,13 @@
 using Auto_Blog;
+using Auto_Blog.DAL;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionstring = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(connectionstring));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -16,6 +22,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/User/Login");
         options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/User/Login");
     });
+
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);//спросить
 

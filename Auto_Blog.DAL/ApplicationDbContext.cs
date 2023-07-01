@@ -6,16 +6,12 @@ namespace Auto_Blog.DAL
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext()
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
             Database.EnsureCreated();
         }
         public DbSet<Car> Cars { get; set; }
         public DbSet<CarType> CarsTypes { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=AutoBlog;Username=postgres;Password=123123");
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

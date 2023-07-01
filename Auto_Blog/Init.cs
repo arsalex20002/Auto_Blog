@@ -4,7 +4,6 @@ using Auto_Blog.DAL.Repository;
 using Auto_Blog.Domain.Entity;
 using Auto_Blog.Service.Implementations;
 using Auto_Blog.Service.Interfaces;
-
 namespace Auto_Blog
 {
     public static class Init
