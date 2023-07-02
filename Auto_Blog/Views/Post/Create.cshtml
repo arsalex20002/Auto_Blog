@@ -1,0 +1,53 @@
+﻿﻿
+@model Auto_Blog.Domain.ViewModels.Post.PostCreateViewModel
+
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Вход в аккаунт";
+}
+
+<div style="padding: 40px;"></div>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <span class="anchor"></span>
+                    <div class="">
+                        <div class="">
+                            <h3 class="mb-0 text-center ParagraphHome">Настройка блога</h3>
+                        </div>
+                        <div class="">
+                            <form autocomplete="on" method="post" asp-controller="Post" asp-action="Create" enctype="multipart/form-data">
+                                <div asp-validation-summary="All" style="font-size:23px; font-family:Impact" class="text-danger text-center"></div>
+                                <div class="">
+                                    <input asp-for="PostViewModel.Name" placeholder="Загаловок Поста" class="form-control textbox-dg font-weight-bold text-center" type="text">
+                                </div>
+                                <div class="">
+                                    <textarea autocomplete="new-password" asp-for="PostViewModel.Description" placeholder="Описание" class="form-control textbox-dg font-weight-bold text-center" type="text"></textarea>
+                                </div>
+                                <div class="">
+
+                                    <p>Сделать публичным <input autocomplete="new-password" asp-for="PostViewModel.IsPublic" placeholder="Сделать Пост Публичным?" type="checkbox"></p>
+                                </div>
+                                <div class="">
+                                    <select asp-for="PostViewModel.Car" placeholder="Описание" class="form-control textbox-dg font-weight-bold text-center" type="password">
+                                        @foreach (string name in Model.CarNames)
+                                        {
+                                            <option>@name</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="">
+                                    <input asp-for="PostViewModel.Avatar" class="form-control" type="file">
+                                </div>
+                                <button class="btn btn-success btn-lg float-right">Создать Пост</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

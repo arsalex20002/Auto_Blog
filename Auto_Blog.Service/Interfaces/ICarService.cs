@@ -9,5 +9,7 @@ namespace Auto_Blog.Service.Interfaces
 
         Task<IBaseResponse<Car>> GetCar(int id);
 
+        Task<IBaseResponse<Car>> GetCarByName(string name);
+
     }
 }

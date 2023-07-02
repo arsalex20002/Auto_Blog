@@ -1,0 +1,29 @@
+﻿﻿
+@model Auto_Blog.Domain.Entity.Post
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+<link rel="stylesheet" href="~/css/GetPost.css" />
+<div class="Car">
+    <div class="ImgCont">
+        <img class="CarImg" src="data:image/jpeg;base64,@Convert.ToBase64String(Model?.Avatar ?? Array.Empty<byte>())" class="card-img-top" alt="@Model.Name">
+    </div>
+    <div class="text_container">
+        <div class="params">
+            <p class="Car_text">Дата создания поста: @Model.DateCreate.ToLongDateString()</p>
+            <p class="Car_text">Последняя редакция: @Model.EditTime.ToLocalTime()</p>
+        </div>
+        <h5 class="Car_text">@Model.Name</h5>
+        <p class="Car_descr overflow-hidden text-ellipsis" id="description">@Model.Description</p>
+        <div class="buttons">
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-controller="Post" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Удалить</a>
+                <a asp-controller="Post" asp-action="Create" asp-route-id="@Model.Id" asp-route-TypeCar="Loop" asp-route-Model="BMW" class="btn btn-primary">Изменить</a>
+            }
+        </div>
+    </div>
+
+</div>

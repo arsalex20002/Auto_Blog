@@ -1,0 +1,103 @@
+﻿.typeCar__containet {
+    width: 80%;
+    margin-left: 10%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.typeCar_item {
+    font-size: 1.5vw;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+}
+
+    .typeCar_item:hover {
+        color: gray;
+    }
+
+.Filter__containet {
+    width: 80%;
+    margin-left: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+}
+
+.Filter_item {
+    width: 10vw;
+    font-size: 0.9vw;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+}
+
+.filter {
+    display: flex;
+    align-items: baseline
+}
+
+.mar {
+    margin-left: 5vw;
+}
+
+.SubBut {
+    margin-left: 1vw;
+    margin-bottom: 0.2vw;
+    font-size: 0.9vw;
+}
+
+.ImgCont {
+    width: 100%;
+    height: 20vw;
+}
+
+.CarImg {
+    width: 100%;
+    height: 100%;
+    border-radius: 1.8vw;
+    object-fit: cover;
+}
+
+.ContentConteiner {
+    display: flex;
+    flex-direction: column
+}
+
+.ContentItem {
+    display: flex;
+    flex-direction: row;
+}
+
+.Car {
+    border: solid;
+    border-radius: 2vw;
+    margin-left: 5%;
+    margin-top: 2%;
+    display: flex;
+    flex-direction:column;
+}
+
+.text_container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.Car_descr {
+    width: 50%;
+}
+
+.buttons {
+    margin-top: auto;
+    margin-bottom: 1vw;
+}
+
+.params{
+    width:100%;
+    display:flex;
+    justify-content: space-between;
+    font-size:1vw;
+}

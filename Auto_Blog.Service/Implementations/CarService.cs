@@ -1,9 +1,7 @@
-﻿using Auto_Blog.DAL.Interfaces;
-using Auto_Blog.Domain.Entity;
+﻿using Auto_Blog.Domain.Entity;
 using Auto_Blog.Domain.Enum;
 using Auto_Blog.Domain.Responce;
 using Auto_Blog.Service.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace Auto_Blog.Service.Implementations
 {
@@ -20,12 +18,42 @@ namespace Auto_Blog.Service.Implementations
         {
             try
             {
-                var car = await _carRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
+                var car =  _carRepository.GetOne(id);
                 if (car == null)
                 {
                     return new BaseResponse<Car>()
                     {
                         Description = "Машина не найдена",
+                        Status = ErrorStatus.CarNotFound
+                    };
+                }
+
+                return new BaseResponse<Car>()
+                {
+                    Status = ErrorStatus.Success,
+                    Data = car.Result
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<Car>()
+                {
+                    Description = $"[GetCar] : {ex.Message}",
+                    Status = ErrorStatus.InternalServerError
+                };
+            }
+        }
+
+        public async Task<IBaseResponse<Car>> GetCarByName(string name)
+        {
+            try
+            {
+                var car = await _carRepository.GetOneByName(name);
+                if (car == null)
+                {
+                    return new BaseResponse<Car>()
+                    {
+                        Description = "Машины не найден",
                         Status = ErrorStatus.CarNotFound
                     };
                 }

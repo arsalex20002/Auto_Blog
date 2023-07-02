@@ -1,10 +1,5 @@
-﻿using Auto_Blog.DAL.Interfaces;
-using Auto_Blog.DAL.Repository;
-using Auto_Blog.Domain.Entity;
-using Auto_Blog.Service.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿using Auto_Blog.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Auto_Blog.Controllers
 {
@@ -15,6 +10,18 @@ namespace Auto_Blog.Controllers
         public CarController(ICarService carService)
         {
             _carService = carService;
+        }
+        public async Task<IActionResult> GetCarModels()
+        {
+            var response = await _carService.GetCars();
+
+            var models = new List<string>();
+            foreach (var item in response.Data)
+            {
+                models.Add(item.Name);
+            }
+
+            return Json(models);
         }
 
         [HttpGet]

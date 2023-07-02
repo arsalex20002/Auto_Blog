@@ -7,7 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Auto_Blog.DAL\Auto_Blog.DAL.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Auto_Blog.Domain\Auto_Blog.Domain.csproj" />
   </ItemGroup>
 

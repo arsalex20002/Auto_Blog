@@ -1,0 +1,39 @@
+﻿@model List<Auto_Blog.Domain.Entity.User>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<style>
+    .card-buttons-group {
+        text-align: right;
+        padding: 10px;
+    }
+</style>
+<div style="padding: 10px;"></div>
+
+<div class="row">
+    @if (User.IsInRole("Admin"))
+    {
+        @foreach (var user in Model)
+        {
+            <div class="row row-cols-1 col-md-4 text-center">
+                <div class="col" style="padding: 10px;">
+                    <div class="card">
+
+                        <div class="card-body">
+                            <h5 class="card-title">@user.Name</h5>
+                            <p class="card-text">@user.Email</p>
+                        </div>
+                        <div class="card-body">
+                            <a asp-controller="User" asp-action="Delete" asp-route-id="@user.Id" class="btn btn-danger">Удалить</a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+

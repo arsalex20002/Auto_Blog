@@ -1,7 +1,6 @@
-﻿using Auto_Blog.DAL.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
 using Auto_Blog.Domain.Entity;
-using Microsoft.EntityFrameworkCore;
-using System;
+using Auto_Blog.Service.Interfaces;
 
 namespace Auto_Blog.DAL.Repository
 {
@@ -22,7 +21,7 @@ namespace Auto_Blog.DAL.Repository
 
         public IQueryable<Car> GetAll()
         {
-            return _context.Cars;
+            return _context.Cars.Include(c => c.CarType);
         }
 
         public async Task Delete(Car model)
@@ -37,6 +36,16 @@ namespace Auto_Blog.DAL.Repository
             await _context.SaveChangesAsync();
 
             return model;
+        }
+
+        public async Task<Car> GetOne(int Id)
+        {
+            return await _context.Cars.Include(c => c.CarType).FirstOrDefaultAsync(x => x.Id == Id);
+        }
+
+        public async Task<Car> GetOneByName(string name)
+        {
+            return await _context.Cars.Include(u => u.Posts).FirstOrDefaultAsync(x => x.Name == name);
         }
     }
 }

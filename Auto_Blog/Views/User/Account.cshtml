@@ -1,0 +1,59 @@
+﻿@model Auto_Blog.Domain.Entity.User
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<style>
+    .card-buttons-group {
+        text-align: right;
+        padding: 10px;
+    }
+</style>
+<link rel="stylesheet" href="~/css/GetPosts.css" />
+<script src="~/js/GetPosts.js" asp-append-version="true"></script>
+<div style="padding: 10px;"></div>
+
+<div class="column">
+    @if (Model != null)
+    {
+
+        @if (Model.Posts.Count != 0)
+        {
+            <div class="ContentConteiner">
+                @foreach (var post in Model.Posts)
+                {
+                    <div class="Car">
+                        <div class="ImgCont">
+                            <img class="CarImg" src="data:image/jpeg;base64,@Convert.ToBase64String(post?.Avatar ?? Array.Empty<byte>())" class="card-img-top" alt="@post.Name">
+                        </div>
+                        <div class="text_container">
+                            <h5 class="Car_text">@post.Name</h5>
+                            <p class="Car_descr overflow-hidden text-ellipsis" id="description">@post.Description</p>
+                            <div class="buttons">
+                                <a asp-controller="Post" asp-action="GetPost" asp-route-id="@post.Id" class="btn btn btn-dark">Перейти</a>
+                                <a asp-controller="Post" asp-action="Delete" asp-route-id="@post.Id" class="btn btn-danger">Удалить</a>
+                                <a asp-controller="Post" asp-action="Create" asp-route-id="@post.Id" asp-route-TypeCar="Loop" asp-route-Model="BMW" class="btn btn-primary">Изменить</a>
+
+                            </div>
+                        </div>
+
+                    </div>
+                }
+            </div>
+
+        }
+        else
+        {
+            <p>По вашему запросу ничего не найдено (</p>
+        }
+
+    }
+    else
+    {
+        <p>На сайте отсутсвуют блоги</p>
+    }
+
+</div>
+
