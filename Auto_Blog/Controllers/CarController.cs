@@ -16,11 +16,10 @@ namespace Auto_Blog.Controllers
             var response = await _carService.GetCars();
 
             var models = new List<string>();
-            foreach (var item in response.Data)
-            {
-                models.Add(item.Name);
-            }
 
+            foreach (var item in response.Data)
+                models.Add(item.Name);
+            
             return Json(models);
         }
 
@@ -28,22 +27,20 @@ namespace Auto_Blog.Controllers
         public async Task<IActionResult> GetCars()
         {
             var response = await _carService.GetCars();
-            if (response.Status == Domain.Enum.ErrorStatus.Success)
-            {
-                return View(response.Data.ToList());
-            }
-            return View("Error", $"{response.Description}");
+
+            return response.Status == Domain.Enum.ErrorStatus.Success
+                ? View(response.Data.ToList())
+                : View("Error", $"{response.Description}");
         }
 
         [HttpGet]
         public async Task<IActionResult> GetCar(int id)
         {
             var response = await _carService.GetCar(id);
-            if (response.Status == Domain.Enum.ErrorStatus.Success)
-            {
-                return View(response.Data);
-            }
-            return View("Error", $"{response.Description}");
+
+            return response.Status == Domain.Enum.ErrorStatus.Success
+                ? View(response.Data)
+                : View("Error", $"{response.Description}");
         }
 
     }

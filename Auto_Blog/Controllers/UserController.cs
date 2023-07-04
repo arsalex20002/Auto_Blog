@@ -22,21 +22,19 @@ namespace Auto_Blog.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var response = await _userService.DeleteUser(id);
-            if (response.Status == ErrorStatus.Success)
-            {
-                return RedirectToAction("GetPosts", "Post");
-            }
-            return View("Error", $"{response.Description}");
+
+            return response.Status == ErrorStatus.Success
+                ? RedirectToAction("GetPosts", "Post")
+                : View("Error", $"{response.Description}");
         }
 
         public async Task<IActionResult> UserPanel()
         {
             var response = await _userService.GetUsers();
-            if (response.Status == ErrorStatus.Success)
-            {
-                return View(response.Data.ToList());
-            }
-            return View("Error", $"{response.Description}");
+
+            return response.Status == ErrorStatus.Success
+                ? View(response.Data.ToList())
+                : View("Error", $"{response.Description}");
         }
 
         [HttpGet]
@@ -45,25 +43,20 @@ namespace Auto_Blog.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var responce = await _userService.GetUser(User.Identity.Name);
-                if (responce.Status == ErrorStatus.Success)
-                {
-                    return View(responce.Data);
-                }
-                else
-                {
-                    return View();
-                }
 
+                return responce.Status == ErrorStatus.Success
+                    ? View(responce.Data)
+                    : View();
             }
+
             return View("Error", "Ошибка доступа к форме");
         }
         [HttpGet]
         public IActionResult Login()
         {
             if (!User.Identity.IsAuthenticated)
-            {
                 return View();
-            }
+            
             return View("Error", "Ошибка доступа к форме");
         }
         [HttpPost]
@@ -73,6 +66,7 @@ namespace Auto_Blog.Controllers
             if (ModelState.IsValid)
             {
                 var response = await _userService.Login(model);
+
                 if (response.Status == Domain.Enum.ErrorStatus.Success)
                 {
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
@@ -80,6 +74,7 @@ namespace Auto_Blog.Controllers
 
                     return RedirectToAction("GetPosts", "Post");
                 }
+
                 ModelState.AddModelError("", response.Description);
             }
             return View(model);
@@ -88,9 +83,8 @@ namespace Auto_Blog.Controllers
         public IActionResult Register()
         {
             if (!User.Identity.IsAuthenticated)
-            {
                 return View();
-            }
+            
             return View("Error", "Ошибка доступа к форме");
 
         }
@@ -102,6 +96,7 @@ namespace Auto_Blog.Controllers
             if (ModelState.IsValid)
             {
                 var response = await _userService.Register(model);
+
                 if (response.Status == ErrorStatus.Success)
                 {
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
@@ -109,6 +104,7 @@ namespace Auto_Blog.Controllers
 
                     return RedirectToAction("GetPosts", "Post");
                 }
+
                 ModelState.AddModelError("", response.Description);
             }
             return View(model);

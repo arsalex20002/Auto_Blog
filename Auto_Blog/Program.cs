@@ -1,6 +1,7 @@
 using Auto_Blog;
 using Auto_Blog.DAL;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,15 +47,12 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Post}/{action=GetPosts}/{id?}");
+    pattern: "{controller=Post}/{action=GetPosts}");
 app.MapControllerRoute(
-    name: "GetPosts",
-    pattern: "{TypeCar=all}",
-    defaults: new { controller = "Post", action = "GetPosts" });
-app.MapControllerRoute(
-    name: "GetPost",
-    pattern: "{TypeCar=all}",
-    defaults: new { controller = "Post", action = "GetPost" });
+    name: "SportCarRoute",
+    pattern: "{TypeCar}",
+    defaults: new { controller = "Post", action = "GetPosts" }
+);
 app.MapControllerRoute(
     name: "MyProfile",
     pattern: "Myprofile/{username}",

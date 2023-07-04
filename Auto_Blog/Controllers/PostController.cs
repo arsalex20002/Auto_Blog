@@ -38,11 +38,12 @@ namespace Auto_Blog.Controllers
 
                     posts.Add(postViewModel);
                 }
+
                 List<string> names = new List<string>();
+
                 foreach (var car in response_cars.Data)
-                {
                     names.Add(car.Name);
-                }
+                
 
                 PostGetViewModel postGetView = new PostGetViewModel
                 {
@@ -57,8 +58,6 @@ namespace Auto_Blog.Controllers
                 return View(postGetView);
 
             }
-                
-            
             return View("Error", $"{response_posts.Description}");
         }
 
@@ -66,6 +65,7 @@ namespace Auto_Blog.Controllers
         public async Task<IActionResult> GetPost(int id)
         {
             var response = await _postService.GetPost(id);
+
             if (response.Status == Domain.Enum.ErrorStatus.Success)
                 return View(response.Data);
             
@@ -81,26 +81,16 @@ namespace Auto_Blog.Controllers
                 if (responce_post.Data.User.Name == User.Identity.Name || User.IsInRole("Admin"))
                 {
                     var response_post_delete = await _postService.DeletePost(id);
-                    if (response_post_delete.Status == Domain.Enum.ErrorStatus.Success)
-                    {
-                        return RedirectToAction("GetPosts", "Post");
-                    }
-                    else
-                    {
-                        return View("Error", $"{response_post_delete.Description}");
-                    }
-                }
-                else
-                {
-                    return View("Error", "Ошибка доступа");
+                    return response_post_delete.Status == Domain.Enum.ErrorStatus.Success
+                        ? RedirectToAction("GetPosts", "Post")
+                        : View("Error", $"{response_post_delete.Description}");
+                    
                 }
 
-            }
-            else
-            {
                 return View("Error", "Ошибка доступа");
             }
-
+            
+            return View("Error", "Ошибка доступа");
         }
         [HttpGet]
         public async Task<IActionResult> Create()
@@ -125,6 +115,7 @@ namespace Auto_Blog.Controllers
                     : View("Error", $"{response.Description}");
                
             }
+
             return View("Error", "Ошибка доступа к форме");
         }
         [HttpPost]
@@ -143,41 +134,36 @@ namespace Auto_Blog.Controllers
                         await _postService.Create(model.PostViewModel, User.Identity.Name);
                         return RedirectToAction("GetPosts", "Post");
                     }
-                    else
-                    {
-                        return View("Error", "Ошибка отправки формы");
-                    }
+                    
+                    return View("Error", "Ошибка отправки формы");
+                    
                 }
                 else
                 {
                     ModelState.Remove("CarNames");
                     ModelState.Remove("PostViewModel.Image");
+
                     if (ModelState.IsValid)
                     {
                         var post = await _postService.GetPost(id);
+
                         if (post.Data.User.Name == User.Identity.Name || User.IsInRole("Admin"))
                         {
                             await _postService.Edit(id, model.PostViewModel);
                             return RedirectToAction("GetPosts", "Post");
                         }
-                        else
-                        {
-                            return View("Error", "Ошибка доступа к форме");
-                        }
-                    }
-                    else
-                    {
+                        
                         return View("Error", "Ошибка доступа к форме");
+                        
                     }
+                    
+                    return View("Error", "Ошибка доступа к форме");
+                    
 
 
                 }
             }
-            else
-            {
-                return View("Error", "Ошибка доступа к форме");
-            }
-
+            return View("Error", "Ошибка доступа к форме");
         }
     }
 }

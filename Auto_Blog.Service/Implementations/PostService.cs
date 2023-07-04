@@ -26,6 +26,7 @@ namespace Auto_Blog.Service.Implementations
                 var responce_user = await _userService.GetUser(userName);
                 //преобразуем фото в массив данных
                 byte[] imageData = null;
+
                 using (var binaryReader = new BinaryReader(model.Avatar.OpenReadStream()))
                 {
                     imageData = binaryReader.ReadBytes((int)model.Avatar.Length);
@@ -101,6 +102,7 @@ namespace Auto_Blog.Service.Implementations
             {
                 var post = await _postRepository.GetOne(id);
                 var car = await _carService.GetCarByName(model.Car);
+
                 if (post == null)
                 {
                     return new BaseResponse<Post>()
@@ -111,10 +113,12 @@ namespace Auto_Blog.Service.Implementations
                 }
 
                 byte[] imageData = null;
+
                 using (var binaryReader = new BinaryReader(model.Avatar.OpenReadStream()))
                 {
                     imageData = binaryReader.ReadBytes((int)model.Avatar.Length);
                 }
+
                 post.Avatar = imageData;
                 post.Name = model.Name;
                 post.CarId = car.Data.Id;
@@ -175,6 +179,7 @@ namespace Auto_Blog.Service.Implementations
             try
             {
                 var posts = _postRepository.GetAll().Where(x => x.IsPublic == true);
+
                 if (!posts.Any())
                 {
                     return new BaseResponse<IEnumerable<Post>>()
@@ -183,45 +188,36 @@ namespace Auto_Blog.Service.Implementations
                         Status = ErrorStatus.CarNotFound
                     };
                 }
+
                 if (PostDate != 0)
-                {
                     posts = posts.Where(x => x.DateCreate.Year == PostDate);
-                }
+                
                 if(typeCar != null && typeCar != "all")
                 {
                     var post_list = posts.ToList();
                     foreach (var post in post_list)
-                    {
                         if (post.Car.CarType.TypeName != typeCar)
-                        {
                             posts = posts.Where(x => x.Id != post.Id);
-                        }
-                    }
+                        
                 }
+
                 if (CarDate != 0)
                 {
                     var post_list = posts.ToList();
+
                     foreach (var post in post_list)
-                    {
                         if (post.Car.DateCreate.Year != CarDate)
-                        {
-                            posts = posts.Where(x => x.Id != post.Id);
-                        }
-                    }
+                            posts = posts.Where(x => x.Id != post.Id);  
                 }
+
                 if (Name != null && Name != "0")
                 {
                     var post_list = posts.ToList();
-                    foreach (var post in post_list)
-                    {
-                        
-                        if (post.Car.Name != Name)
-                        {
-                            posts = posts.Where(x => x.Id != post.Id);
-                        }
-                    }
-                }
 
+                    foreach (var post in post_list)
+                        if (post.Car.Name != Name)
+                            posts = posts.Where(x => x.Id != post.Id);
+                }
 
                 return new BaseResponse<IEnumerable<Post>>()
                 {

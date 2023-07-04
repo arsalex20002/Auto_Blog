@@ -19,14 +19,14 @@ namespace Auto_Blog.Service.Implementations
             try
             {
                 var car =  _carRepository.GetOne(id);
+
                 if (car == null)
-                {
                     return new BaseResponse<Car>()
                     {
                         Description = "Машина не найдена",
                         Status = ErrorStatus.CarNotFound
                     };
-                }
+                
 
                 return new BaseResponse<Car>()
                 {

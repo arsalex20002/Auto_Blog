@@ -64,6 +64,7 @@ namespace Auto_Blog.Service.Implementations
             try
             {
                 var user = _UserRepository.GetAll();
+
                 if (!user.Any())
                 {
                     return new BaseResponse<IEnumerable<User>>()
@@ -94,6 +95,7 @@ namespace Auto_Blog.Service.Implementations
             try
             {
                 var user = await _UserRepository.GetOneByName(model.Name);
+
                 if (user == null)
                 {
                     return new BaseResponse<ClaimsIdentity>()
@@ -109,6 +111,7 @@ namespace Auto_Blog.Service.Implementations
                         Description = "Неверный пароль"
                     };
                 }
+
                 var result = Authenticate(user);
 
                 return new BaseResponse<ClaimsIdentity>()
@@ -133,6 +136,7 @@ namespace Auto_Blog.Service.Implementations
                 new Claim(ClaimsIdentity.DefaultNameClaimType, user.Name),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.ToString())
             };
+
             return new ClaimsIdentity(claims, "ApplicationCookie",
                 ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
         }
@@ -141,6 +145,7 @@ namespace Auto_Blog.Service.Implementations
             try
             {
                 var user = await _UserRepository.GetOneByName(model.Name);
+
                 if (user != null)
                 {
                     return new BaseResponse<ClaimsIdentity>()
@@ -182,6 +187,7 @@ namespace Auto_Blog.Service.Implementations
             try
             {
                 var user = await _UserRepository.GetOneByName(name);
+
                 if (user == null)
                 {
                     return new BaseResponse<User>()
