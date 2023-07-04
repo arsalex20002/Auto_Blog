@@ -1,4 +1,4 @@
-﻿@model List<Auto_Blog.Domain.Entity.Post>
+﻿@model Auto_Blog.Domain.ViewModels.Post.PostGetViewModel
 
 @{
     ViewBag.Title = "title";
@@ -28,10 +28,10 @@
             <p><a class="typeCar_item" asp-controller="sedan" name="TypeCar">Седан</a></p>
         </div>
         <form class="Filter__containet" method="get" asp-controller="Post" asp-action="GetPosts">
-            <input type="hidden" id="modelSelectType" name="TypeCar" value="">
+            <input type="hidden" id="modelSelectType" asp-for="TypeName" name="TypeCar">
             <div class="filter">
                 <p class="Filter_item">Дата написания статьи</p>
-                <select name="PostDate" asp="" placeholder="Описание" class="Filter_item form-control textbox-dg font-weight-bold text-center" type="password">
+                <select name="PostDate" asp-for="PostDate" placeholder="Описание" class="Filter_item form-control textbox-dg font-weight-bold text-center" type="password">
                     <option value="0">Любая</option>
                     <option>2023</option>
                     <option>2022</option>
@@ -44,7 +44,7 @@
             </div>
             <div class="filter">
                 <p class="Filter_item mar">Дата выпуска машины</p>
-                <select name="CarDate" asp="" placeholder="Описание" class="Filter_item form-control textbox-dg font-weight-bold text-center" type="password">
+                <select name="CarDate" asp-for="CarDate" placeholder="Описание" class="Filter_item form-control textbox-dg font-weight-bold text-center" type="password">
                     <option value="0">Любая</option>
                     <option>2023</option>
                     <option>2022</option>
@@ -57,20 +57,24 @@
             </div>
             <div class="filter">
                 <p class="Filter_item mar">Модель машины</p>
-                <select id="modelSelect" name="NameCar" asp="" placeholder="Модель машины" class="Filter_item form-control textbox-dg font-weight-bold text-center" type="text">
+                <select id="modelSelect" name="NameCar" asp-for="CarName" placeholder="Модель машины" class="Filter_item form-control textbox-dg font-weight-bold text-center" type="text">
                     <option value="0">Любая</option>
+                    @foreach(var carName in Model.CarNames)
+                    {
+                        <option>@carName</option>
+                    }
                 </select>
             </div>
             <input class="SubBut btn btn-success" text="Искать" type="submit" value="Submit" />
         </form>
-        @if (Model.Count != 0)
+        @if (Model.PostViewModel.Count != 0)
         {
             <div class="ContentConteiner">
-                @foreach (var post in Model)
+                @foreach (var post in Model.PostViewModel)
                 {
                     <div class="Car">
                         <div class="ImgCont">
-                            <img class="CarImg" src="data:image/jpeg;base64,@Convert.ToBase64String(post?.Avatar ?? Array.Empty<byte>())" class="card-img-top" alt="@post.Name">
+                            <img class="CarImg" src="data:image/jpeg;base64,@Convert.ToBase64String(post?.Image ?? Array.Empty<byte>())" class="card-img-top" alt="@post.Name">
                         </div>
                         <div class="text_container">
                             <h5 class="Car_text">@post.Name</h5>

@@ -19,14 +19,47 @@ namespace Auto_Blog.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPosts(string TypeCar, string NameCar, int PostDate, int CarDate)
         {
+            var response_cars = await _carService.GetCars();
+            var response_posts = await _postService.GetPosts(TypeCar, NameCar, PostDate, CarDate);
 
-            var response = await _postService.GetPosts(TypeCar, NameCar, PostDate, CarDate);
-
-            if (response.Status == ErrorStatus.Success)
+            if (response_posts.Status == ErrorStatus.Success)
             {
-                return View(response.Data.ToList());
+                List<PostViewModel> posts = new List<PostViewModel>();
+
+                foreach(var post in response_posts.Data)
+                {
+                    PostViewModel postViewModel = new PostViewModel
+                    {
+                        Id = post.Id,
+                        Name = post.Name,
+                        Image = post.Avatar,
+                        Description = post.Description
+                    };
+
+                    posts.Add(postViewModel);
+                }
+                List<string> names = new List<string>();
+                foreach (var car in response_cars.Data)
+                {
+                    names.Add(car.Name);
+                }
+
+                PostGetViewModel postGetView = new PostGetViewModel
+                {
+                    PostViewModel = posts,
+                    TypeName = TypeCar,
+                    CarName = NameCar,
+                    PostDate = PostDate,
+                    CarDate = CarDate,
+                    CarNames = names
+                };
+
+                return View(postGetView);
+
             }
-            return View("Error", $"{response.Description}");
+                
+            
+            return View("Error", $"{response_posts.Description}");
         }
 
         [HttpGet]
@@ -34,9 +67,8 @@ namespace Auto_Blog.Controllers
         {
             var response = await _postService.GetPost(id);
             if (response.Status == Domain.Enum.ErrorStatus.Success)
-            {
                 return View(response.Data);
-            }
+            
             return View("Error", $"{response.Description}");
         }
 
@@ -77,23 +109,21 @@ namespace Auto_Blog.Controllers
             {
                 List<string> names = new List<string>();
                 var response = await _carService.GetCars();
+
                 foreach (var name in response.Data)
-                {
                     names.Add(name.Name);
-                }
+                
+
                 var Data = new PostCreateViewModel()
                 {
                     PostViewModel = null,
                     CarNames = names
                 };
-                if (response.Status == Domain.Enum.ErrorStatus.Success)
-                {
-                    return View(Data);
-                }
-                else
-                {
-                    return View("Error", $"{response.Description}");
-                }
+
+                return response.Status == Domain.Enum.ErrorStatus.Success
+                    ? View(Data)
+                    : View("Error", $"{response.Description}");
+               
             }
             return View("Error", "Ошибка доступа к форме");
         }
