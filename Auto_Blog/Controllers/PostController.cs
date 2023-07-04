@@ -32,6 +32,8 @@ namespace Auto_Blog.Controllers
                     {
                         Id = post.Id,
                         Name = post.Name,
+                        Car = post.Car.CarType.TypeName,
+                        Slug = post.slug,
                         Image = post.Avatar,
                         Description = post.Description
                     };
@@ -62,7 +64,7 @@ namespace Auto_Blog.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPost(int id)
+        public async Task<IActionResult> GetPost(int id, string slug)
         {
             var response = await _postService.GetPost(id);
 

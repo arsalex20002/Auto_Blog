@@ -21,12 +21,13 @@ namespace Auto_Blog.Service.Implementations
                 var car =  _carRepository.GetOne(id);
 
                 if (car == null)
+                {
                     return new BaseResponse<Car>()
                     {
                         Description = "Машина не найдена",
                         Status = ErrorStatus.CarNotFound
                     };
-                
+                }
 
                 return new BaseResponse<Car>()
                 {
@@ -49,6 +50,7 @@ namespace Auto_Blog.Service.Implementations
             try
             {
                 var car = await _carRepository.GetOneByName(name);
+
                 if (car == null)
                 {
                     return new BaseResponse<Car>()
@@ -79,6 +81,7 @@ namespace Auto_Blog.Service.Implementations
             try
             {
                 var cars = _carRepository.GetAll();
+
                 if (!cars.Any())
                 {
                     return new BaseResponse<IEnumerable<Car>>()

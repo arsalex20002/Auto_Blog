@@ -47,12 +47,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Post}/{action=GetPosts}");
-app.MapControllerRoute(
-    name: "SportCarRoute",
-    pattern: "{TypeCar}",
-    defaults: new { controller = "Post", action = "GetPosts" }
-);
+    pattern: "{controller=Post}/{action=GetPosts}/{TypeCar=all}/{id?}/{slug?}");
 app.MapControllerRoute(
     name: "MyProfile",
     pattern: "Myprofile/{username}",

@@ -35,6 +35,7 @@ namespace Auto_Blog.Service.Implementations
                 var post = new Post()
                 {
                     Name = model.Name,
+                    slug = model.Name?.Replace(" ", "-").ToLower() + '-' + DateTime.Now.Year.ToString(),
                     Description = model.Description,
                     DateCreate = DateTime.Now.ToUniversalTime(),
                     EditTime = DateTime.Now,
@@ -121,6 +122,7 @@ namespace Auto_Blog.Service.Implementations
 
                 post.Avatar = imageData;
                 post.Name = model.Name;
+                post.slug = model.Name?.Replace(" ", "-").ToLower() + '-' + model.DateCreate.Year.ToString();
                 post.CarId = car.Data.Id;
                 post.IsPublic = model.IsPublic;
                 post.Description = model.Description;
