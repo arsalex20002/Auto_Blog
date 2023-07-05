@@ -130,7 +130,7 @@ namespace Auto_Blog.Controllers
                 {
                     ModelState.Remove("CarNames");
                     ModelState.Remove("PostViewModel.Image");
-
+                    ModelState.Remove("PostViewModel.Slug");
                     if (ModelState.IsValid)
                     {
                         await _postService.Create(model.PostViewModel, User.Identity.Name);
